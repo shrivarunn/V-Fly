@@ -1,0 +1,1 @@
+{"rows":["A","B","C","D","E","F"],"seats_per_row":4,"occupied":["A2","B3","C1","D4","E2","F3"],"selection_rule":"select exactly one distinct available seat per passenger"}

@@ -1,0 +1,6 @@
+case_id,origin,destination,passengers,expected_result
+SEARCH001,Hyderabad,Bengaluru,1,results
+SEARCH002,Delhi,Mumbai,2,results
+SEARCH003,Chennai,Kochi,1,results
+SEARCH004,Bengaluru,Goa,1,results
+SEARCH005,Mumbai,Ahmedabad,1,results

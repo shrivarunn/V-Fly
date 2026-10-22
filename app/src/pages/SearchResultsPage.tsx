@@ -1,0 +1,15 @@
+import {useMemo,useState} from "react";
+import {ArrowLeft, RotateCcw, SlidersHorizontal} from "lucide-react";
+import type {Itinerary,SearchCriteria} from "../types";
+import {itineraries} from "../data/itineraries";
+import {money} from "../lib/format";
+import ItineraryCard from "../components/ItineraryCard";
+import StepBar from "../components/StepBar";
+export default function SearchResultsPage({criteria,onBack,onSelect}:{criteria:SearchCriteria|null;onBack:()=>void;onSelect:(i:Itinerary)=>void}){
+ const [maxPrice,setMaxPrice]=useState("5000"),[sort,setSort]=useState("earliest");
+ const filtered=useMemo(()=>{let list=itineraries.filter(i=>criteria&&i.origin===criteria.origin&&i.destination===criteria.destination&&i.fare<=Number(maxPrice));return [...list].sort((a,b)=>sort==="earliest"?a.departure.localeCompare(b.departure):sort==="latest"?b.departure.localeCompare(a.departure):sort==="low"?a.fare-b.fare:b.fare-a.fare);},[criteria,maxPrice,sort]);
+ if(!criteria)return <section className="guard"><h2>Your search is waiting</h2><p>Start with a route search before viewing itineraries.</p><button className="button primary" onClick={onBack}>Back to search</button></section>;
+ return <section className="content-page"><StepBar active={1}/><button className="text-button" onClick={onBack}><ArrowLeft size={16}/> Edit search</button><div className="results-heading"><div><span className="eyebrow">YOUR ROUTE</span><h1>{criteria.origin} <span>→</span> {criteria.destination}</h1><p>{criteria.date} · {criteria.passengers} {criteria.passengers===1?"passenger":"passengers"} · Fictional demo itineraries</p></div><div className="results-count"><strong>{filtered.length}</strong><span>trips found</span></div></div>
+ <div className="results-layout"><aside className="filters"><h3><SlidersHorizontal size={17}/> Refine results</h3><label className="field"><span>Maximum price <strong>{money(Number(maxPrice))}</strong></span><input id="price-filter" data-testid="price-filter" type="range" min="500" max="5000" step="50" value={maxPrice} onChange={e=>setMaxPrice(e.target.value)}/><div className="range-labels"><small>₹500</small><small>₹5,000</small></div></label><label className="field"><span>Sort by</span><select id="departure-sort" data-testid="departure-sort" value={sort} onChange={e=>setSort(e.target.value)}><option value="earliest">Earliest departure</option><option value="latest">Latest departure</option><option value="low">Lowest price</option><option value="high">Highest price</option></select></label><button className="text-button reset-button" onClick={()=>{setMaxPrice("5000");setSort("earliest");}}><RotateCcw size={14}/> Reset filters</button></aside>
+ <div className="results-list" id="results-list" data-testid="results-list" aria-live="polite">{filtered.length?filtered.map(i=><ItineraryCard key={i.id} item={i} onSelect={onSelect}/>):<div className="empty-state" data-testid="empty-results"><span>◌</span><h3>No trips match these filters</h3><p>Try a higher price limit or reset your filters.</p><button className="button secondary" onClick={()=>setMaxPrice("5000")}>Clear price filter</button></div>}</div></div></section>
+}

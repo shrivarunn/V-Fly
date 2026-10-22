@@ -1,0 +1,5 @@
+case_id,first_name,surname,email,phone,expected_valid
+PASS001,Anju,Sharma,anju.demo@example.test,9000000001,true
+PASS002,Ravi,,ravi.demo@example.test,9000000002,false
+PASS003,Meera,Iyer,meera.demo@example.test,9000000003,true
+PASS004,Sam,Demo,not-an-email,9000000004,false

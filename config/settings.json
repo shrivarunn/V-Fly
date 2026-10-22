@@ -1,0 +1,10 @@
+{
+  "base_url": "http://127.0.0.1:5173",
+  "browser": "chrome",
+  "explicit_wait_timeout": 10,
+  "page_load_timeout": 30,
+  "headless": false,
+  "screenshot_dir": "artifacts/screenshots",
+  "log_dir": "artifacts/logs",
+  "html_report": "reports/pytest-report.html"
+}
